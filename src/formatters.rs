@@ -207,7 +207,7 @@ impl Formatter for HtmlFormatter {
 mod tests {
     use crate::formatters::{AnsiFormatter, HtmlFormatter, PlainFormatter};
     use crate::ydclient::*;
-    use reqwest::Client;
+    use reqwest::blocking::Client;
 
     static RAW_FELIX: &'static str = r#"
     {
@@ -342,11 +342,11 @@ Felix ['fi:liks] 费利克斯
      * n. （Comment）（美、瑞、法）科门特 （人名）
 <span color="navy">  Web Reference:</span>
      * <span color="goldenrod">Comment</span>
-       <span color="purple">评论</span>；<span color="purple">注释</span>；<span color="purple">注解</span>
+       <span color="purple">评论</span>；<span color="purple">注释</span>；<span color="purple">注解</span>；<span color="purple">客户点评</span>
+     * <span color="goldenrod">No Comment</span>
+       <span color="purple">不予置评</span>；<span color="purple">无可奉告</span>；<span color="purple">不予回答</span>；<span color="purple">无意见</span>
      * <span color="goldenrod">Fair comment</span>
-       <span color="purple">公正评论</span>；<span color="purple">公允评论</span>；<span color="purple">合理评论</span>
-     * <span color="goldenrod">comment on</span>
-       <span color="purple">评论</span>；<span color="purple">评议是非</span>；<span color="purple">对</span>
+       <span color="purple">公正评论</span>；<span color="purple">公允评论</span>；<span color="purple">合理评论</span>；<span color="purple">公正的评论</span>
 "#,
             result
         );

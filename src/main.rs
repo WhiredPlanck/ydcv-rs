@@ -16,7 +16,7 @@ use clipboard2::{Clipboard, SystemClipboard};
 #[cfg(feature = "clipboard")]
 use x11_clipboard::Clipboard;
 
-use reqwest::{Client, ClientBuilder};
+use reqwest::blocking::{Client, ClientBuilder};
 use rustyline::Editor;
 use structopt::StructOpt;
 
@@ -145,7 +145,7 @@ fn main() {
     #[cfg(not(feature = "clipboard"))]
     let selection_enabled = false;
 
-    let mut client = ClientBuilder::new().use_sys_proxy().build().unwrap();
+    let mut client = ClientBuilder::new().build().unwrap();
 
     let mut html = HtmlFormatter::new(notify_enabled);
     let mut ansi = AnsiFormatter::new(notify_enabled);
