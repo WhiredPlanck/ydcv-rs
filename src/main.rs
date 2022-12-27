@@ -16,12 +16,14 @@ use structopt::StructOpt;
 mod formatters;
 mod ydclient;
 mod ydresponse;
+mod cli;
 
 #[cfg(windows)]
 #[cfg(feature = "notify")]
 use crate::formatters::WinFormatter;
 use crate::formatters::{AnsiFormatter, Formatter, HtmlFormatter, PlainFormatter};
 use crate::ydclient::YdClient;
+use crate::cli::YdcvOptions;
 
 fn lookup_explain(client: &mut Client, word: &str, fmt: &mut dyn Formatter, raw: bool) {
     if raw {
@@ -38,79 +40,6 @@ fn lookup_explain(client: &mut Client, word: &str, fmt: &mut dyn Formatter, raw:
             Err(err) => fmt.print(word, &format!("Error looking-up word {}: {:?}", word, err)),
         }
     }
-}
-
-#[derive(StructOpt)]
-#[structopt(name = "ydcv", about = "A Rust version of ydcv")]
-struct YdcvOptions {
-    #[cfg(feature = "clipboard")]
-    #[structopt(
-        short = "x",
-        long = "selection",
-        help = "show explaination of current selection"
-    )]
-    selection: bool,
-
-    #[cfg(windows)]
-    #[cfg(feature = "clipboard")]
-    #[structopt(
-        short = "i",
-        long = "interval",
-        help = "time interval between selection in msec (default: 1000 on windows and 0 on others)",
-        default_value = "1000"
-    )]
-    interval: u64,
-
-    #[cfg(unix)]
-    #[cfg(feature = "clipboard")]
-    #[structopt(
-        short = "i",
-        long = "interval",
-        help = "time interval between selection in msec (default: 1000 on windows and 0 on others)",
-        default_value = "0"
-    )]
-    interval: u64,
-
-    #[structopt(short = "H", long = "html", help = "HTML-style output")]
-    html: bool,
-
-    #[cfg(feature = "notify")]
-    #[structopt(
-        short = "n",
-        long = "notify",
-        help = "send desktop notifications (implies -H on X11)"
-    )]
-    notify: bool,
-
-    #[structopt(
-        short = "r",
-        long = "raw",
-        help = "dump raw json reply from server",
-        conflicts_with = "html",
-        conflicts_with = "notify"
-    )]
-    raw: bool,
-
-    #[structopt(
-        short = "c",
-        long = "color",
-        help = "[auto, always, never] use color",
-        default_value = "auto"
-    )]
-    color: String,
-
-    #[cfg(unix)]
-    #[cfg(feature = "notify")]
-    #[structopt(
-        short = "t",
-        long = "timeout",
-        help = "timeout of notification (second)",
-        default_value = "30"
-    )]
-    timeout: i32,
-
-    #[structopt(value_name = "WORDS")]
-    free: Vec<String>,
 }
 
 fn main() {
