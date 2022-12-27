@@ -5,13 +5,13 @@ extern crate log;
 #[macro_use]
 extern crate lazy_static;
 
+use clap::Parser;
 #[cfg(feature = "clipboard")]
 use copypasta::ClipboardContext;
 
 use copypasta::ClipboardProvider;
 use reqwest::blocking::{Client, ClientBuilder};
 use rustyline::Editor;
-use structopt::StructOpt;
 
 mod formatters;
 mod ydclient;
@@ -45,7 +45,7 @@ fn lookup_explain(client: &mut Client, word: &str, fmt: &mut dyn Formatter, raw:
 fn main() {
     env_logger::init();
 
-    let ydcv_options = YdcvOptions::from_args();
+    let ydcv_options = YdcvOptions::parse();
 
     #[cfg(feature = "notify")]
     let notify_enabled = ydcv_options.notify;
